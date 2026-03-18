@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Models.Login>
+@{
+
+    var loggedUsersId = (List<int>)ViewBag.LoggedUsersId;
+    int count = Model.Count();
+    List<Models.Login> logins = Model.ToList();
+    int index = 0;
+    bool first = true;
+    while (index < count)
+    {
+        var login = logins[index];
+        var shiftedEventDate = login.LoginDate.AddHours((int)Session["TimeZoneOffset"]);
+        var shiftedLogoutDate = login.LogoutDate.AddHours((int)Session["TimeZoneOffset"]);
+        int currentDay = shiftedEventDate.Day;
+
+        string open = first ? "open" : "";
+        first = false;
+
+        object param = new { day = login.LoginDate.ToShortDateString().Trim() };
+        <div style="display:grid; grid-template-columns:auto 20px; align-items:start;">
+            <details @open>
+                <summary>@shiftedEventDate.ToShortDateString() </summary>
+                @do
+                {
+                    if (login.User != null)
+                    {
+                        <div class="journalLayout">
+                            <div style="width:200px">@Helper.AvatarUser(login.User, "UserSmallAvatar")</div>
+                            <div>@shiftedEventDate.ToString("HH:mm")</div>
+
+                            @if (shiftedEventDate != shiftedLogoutDate)
+                            {
+                                <div>-</div>
+                                <div>@shiftedLogoutDate.ToString("HH:mm")</div>
+                            }
+                            else
+                            {
+                                if (loggedUsersId.Contains(login.User.Id))
+                                {
+                                    loggedUsersId.Remove(login.User.Id);
+                                    <div>-</div>
+                                    <div title="Est en ligne en ce moment">@Helper.OnLineStatusIcon(true, false)</div>
+                                }
+                                else
+                                {
+                                    <div>-</div>
+                                    <div>@Helper.TimeOutIcon()</div>
+                                }
+                            }
+
+                            @if (true && login.IpAddress != "::1" && login.CountryCode != null)
+                            {
+                                <div>
+                                    @Helper.CountryFlag(login.CountryCode.ToLower())
+                                </div>
+                                <div class="extraJournalInfo IP_Address">
+                                    @login.IpAddress, @login.City, @login.RegionName
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="extraJournalInfo IP_Address">&nbsp;</div>
+                            }
+
+                        </div>
+                    }
+                    index++;
+                    if (index < count)
+                    {
+                        login = logins[index];
+                        shiftedEventDate = login.LoginDate.AddHours((int)Session["TimeZoneOffset"]);
+                        shiftedLogoutDate = login.LogoutDate.AddHours((int)Session["TimeZoneOffset"]);
+                    }
+                } while (index < count && currentDay == shiftedEventDate.Day);
+            </details>
+            <div style="margin-top:4px;margin-left:2px;">
+                @Helper.IconConfirmCmdWithParam("Accounts", "DeleteLoginsDay", param, "fa-times", "Effacer la journée du " + shiftedEventDate.ToShortDateString())
+            </div>
+        </div>
+    }
+}

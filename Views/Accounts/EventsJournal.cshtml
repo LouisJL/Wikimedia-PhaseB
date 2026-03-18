@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Models.Event>
+
+@{
+    ViewBag.PageTitle = "Journal des activitées";
+   
+}
+
+<div class="formLayout">
+    <div id="EventsListContainer"><!-- Periodicaly refreshed --></div>
+</div>
+@section Scripts {
+
+    <script>
+        $(() => {
+            newSession(600);
+            let pr = new AutoRefreshedPanel("EventsListContainer", "/Accounts/GetEventsList", 5);
+        })
+    </script>
+}
+

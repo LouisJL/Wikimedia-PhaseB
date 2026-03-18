@@ -1,0 +1,68 @@
+﻿@{ ViewBag.PageTitle = "Wikimedia"; }
+
+
+<!--
+    The content of this view rely on the one produced
+    by the /Contacts/GetContacts action that call
+    Views/Contacts/GetContacts.cshtml partial view
+-->
+
+<div id="MediaListPanel" class="mediaListLayout">
+    <!-- Periodicaly refreshed by object contactListPanel of class AutoRefreshedPanel -->
+</div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            let mediasListAutoRefreshPanel =
+                new AutoRefreshedPanel(
+                    "MediaListPanel",
+                    "/Medias/GetMedias",
+                    5,
+                    mediasListPostRefresh);
+
+            let categoriesSelectAutoRefreshPanel =
+                new AutoRefreshedPanel(
+                    "categorySelectPanel",
+                    "/Medias/GetMediasCategoriesList",
+                    -1 /* manually refreshed */,
+                    categoriesSelectPostRefresh);
+
+            let keywordsOnchangeTimer = null;
+
+            $("#searchInput").on('keyup', function () {
+                clearTimeout(keywordsOnchangeTimer);
+                /* delay request by 0.5 seconds */
+                keywordsOnchangeTimer = setTimeout(() => {
+                    window.location = "/Medias/SetSearchString?value=" + $("#searchInput").val();
+                }, 1000 /* 1 seconds */);
+            });
+            $("#searchInput").on('search', function () { /* click on clear */
+                clearTimeout(keywordsOnchangeTimer);
+                window.location = "/Medias/SetSearchString?value=" + $("#searchInput").val();
+            });
+            $("#searchInput").on("focus", function () {
+                mediasListAutoRefreshPanel.pause();
+            });
+            $("#searchInput").on("blur", function () {
+                mediasListAutoRefreshPanel.restart();
+            });
+            function mediasListPostRefresh() {
+                categoriesSelectAutoRefreshPanel.refresh(true);
+            }
+            function categoriesSelectPostRefresh() {
+
+                $("#categorySelect").off();
+                $("#categorySelect").on("focus", function () {
+                    mediasListAutoRefreshPanel.pause();
+                });
+                $("#categorySelect").on("blur", function () {
+                    mediasListAutoRefreshPanel.restart();
+                });
+                $("#categorySelect").on('change', function () {
+                    window.location = "/Medias/SetSearchCategory?value=" + $("#categorySelect").val();
+                });
+            }
+        })
+    </script>
+}

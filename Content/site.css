@@ -1,0 +1,99 @@
+
+
+form {
+    max-width: 4in;
+    margin: auto;
+}
+
+    form label {
+        font-weight: bold;
+    }
+
+    form input {
+        margin-bottom: 8px;
+    }
+
+
+.detailsPanel dl {
+    margin: auto;
+    font-size: 1em;
+}
+
+.detailsPanel dt {
+    color: gray;
+}
+
+.detailsPanel dd {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+fieldset {
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: 6px !important;
+    padding-top: 16px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+legend {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #777;
+    float: none;
+    width: inherit;
+    padding: 0 6px;
+    margin-left: 6px;
+    margin-bottom: -12px;
+    transform: translate(0,-1px);
+    text-align: left;
+}
+
+input, textarea {
+    margin: 0px !important;
+}
+
+label {
+    color: #777;
+}
+
+details {
+    /* source : https://nerdy.dev/open-and-close-transitions-for-the-details-element*/
+
+    @media (prefers-reduced-motion: no-preference) {
+        interpolate-size: allow-keywords;
+    }
+
+
+    &::details-content {
+        opacity: 0;
+        block-size: 0;
+        overflow-y: clip;
+        transition: content-visibility 1s allow-discrete, opacity 0.75s, block-size 0.75s;
+    }
+
+    &[open]::details-content {
+        opacity: 1;
+        block-size: auto;
+    }
+
+    & div {
+        margin-left: 6px;
+    }
+}
+
+summary {
+    background: lightgray;
+    padding-left: 8px;
+    height: 34px;
+    border: 1px solid white;
+    border-radius: 6px;
+    font-weight: bold;
+
+
+    &::marker {
+        font-size: 20px;
+    }
+}

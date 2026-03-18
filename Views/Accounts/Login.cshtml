@@ -1,0 +1,87 @@
+﻿@model Models.LoginCredential
+
+@{
+    ViewBag.Title = "Connexion";
+
+    string currentLoginEmail = Session["currentLoginEmail"] != null ? (string)Session["currentLoginEmail"] : "";
+    string eventMessage = (string)Session["LoginMessage"];
+    bool eventSuccess = (bool)Session["LoginSuccess"];
+    string messageColor = eventSuccess ? "green" : "red";
+    string alertIcon = eventSuccess ? "fa-solid fa-circle-exclamation" : "fa-triangle-exclamation";
+    ViewBag.PageTitle = "Application Web";
+}
+
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.TimeZoneOffset)
+
+    <div class="event-form">
+
+        @if (eventMessage != "")
+        {
+            <fieldset>
+                <legend><i class="fa-solid @alertIcon" style="color:@messageColor; font-size:20px;"></i></legend>
+                <div style="text-align:left !important">
+                    <span style="color:@messageColor">@eventMessage</span>
+                </div>
+            </fieldset>
+        }
+
+        <fieldset>
+            <legend>Connexion</legend>
+            <input name="Email" id="Email"
+                   class="form-control Email"
+                   placeholder="Courriel"
+                   required
+                   RequireMessage="Veuillez entrer votre adresse de courriel"
+                   InvalidMessage="Courriel invalide"/>
+            <div class="passwordLayout">
+                <input name="Password" id="Password"
+                       class="form-control"
+                       type="password"
+                       placeholder="Mot de passe"
+                       required
+                       RequireMessage="Veuillez entrer votre mot de passe" />
+                <i id="toggleShowPassword" class="passwordShowIcon fa fa-eye" title="Afficher/Masquer le mot de passe"></i>
+               
+            </div>
+
+            <input id="submit" 
+                   type="submit" 
+                   value="Se connecter..." 
+                   class="btn btn-primary" />
+        </fieldset>
+        @Html.ActionLink("S'enregistrer...", "Subscribe")
+        @Html.ActionLink("Mot de passe oublié...", "RenewPasswordCommand")
+    </div>
+}
+@section Scripts {
+
+    <script>
+        $(() => {
+            initFormValidation();
+            // noTimeout();
+            // initSessionTimeout(1500 * 60 /*seconds*/);
+            // Set client local time zone
+            $("#TimeZoneOffset").val(new Date().getTimezoneOffset() / 60);
+
+            if ($("#Password").val() == "")
+                $("#toggleShowPassword").hide();
+            else
+                $("#toggleShowPassword").show();
+            $("#toggleShowPassword").click(() => {
+                $("#Password").attr("type", $("#Password").attr("type") == 'password' ? 'text' : 'password');
+                $("#toggleShowPassword").toggleClass("fa-eye");
+                $("#toggleShowPassword").toggleClass("fa-eye-slash");
+            });
+            $("#Password").keyup(() => {
+                if ($("#Password").val() == "")
+                    $("#toggleShowPassword").hide();
+                else
+                    $("#toggleShowPassword").show();
+            })
+        })
+    </script>
+}

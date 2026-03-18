@@ -1,0 +1,21 @@
+﻿@model Models.Media
+@{
+    ViewBag.PageTitle = "Détails";
+}
+
+<div id="detailsPanel" class="detailsPanel">
+    <!-- auto refreshed -->
+</div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            newSession(600);
+            mediaDetails_ARP = new AutoRefreshedPanel("detailsPanel", "/Medias/GetMediaDetails", 5, mediaDetailsPostRefresh);
+        })
+        
+        function mediaDetailsPostRefresh() {
+           // todo
+        }
+     </script>
+}

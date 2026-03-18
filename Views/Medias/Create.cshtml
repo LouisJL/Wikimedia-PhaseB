@@ -1,0 +1,25 @@
+﻿@model Models.Media
+@{
+    ViewBag.Action = "Create";
+    Html.RenderPartial("MediaForm");
+    ViewBag.PageTitle = "Ajout"; 
+}
+
+@section Scripts { <!-- Cette section ne doit pas être placée dans une vue partielle -->
+    <script>
+        $(() => {
+            // Nécessaire pour la validation des champs de formulaire
+            initFormValidation();
+            addConflictValidation("/Medias/CheckConflict", 'YoutubeId' /* field unicity check */, 'submit' /* form submit button Id */);
+            $("#YoutubeId").on("change", function () {
+                let youtubeId = $("#YoutubeId").val().trim();
+                if (youtubeId.indexOf("=") > -1)
+                    youtubeId = youtubeId.split("=")[1];
+                if (youtubeId.indexOf("&") > -1)
+                    youtubeId = youtubeId.split("&")[0];
+                $("#YoutubeId").val(youtubeId);
+                $("#previewThumbnail").attr("src", `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`)
+            })
+        })
+    </script>
+}

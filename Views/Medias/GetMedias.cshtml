@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Models.MediaOwner>
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var thumbUrl = "https://img.youtube.com/vi/" + item.Media.YoutubeId + "/mqdefault.jpg";
+
+        <div class="mediaLayout" style="position: relative; margin-bottom: 16px;">
+            <a href="/Medias/Details/@item.Media.Id" title="Voir les détails de @item.Media.Title" style="text-decoration:none; display:block; width:100%;">
+
+                <div class="mediaThumbnail"
+                     style="
+                        background-image: url('@thumbUrl');
+                        background-size: cover;
+                        background-position: center;
+                        width: 100%;
+                        padding-top: 56.25%; /* ratio 16:9 */
+                        border-radius: 8px;
+                        position: relative;
+                     ">
+                </div>
+
+                <img src="@item.OwnerAvatar"
+                     title="Ajouté par @item.OwnerName"
+                     style="
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        border: 2px solid white;
+                     " />
+
+                @if (item.Media.Shared && Models.User.ConnectedUser != null && item.Media.OwnerId == Models.User.ConnectedUser.Id)
+                {
+                    <div style="
+                            position: absolute;
+                            top: 8px;
+                            right: 56px;
+                            width: 40px;
+                            height: 40px;
+                            background-color: white;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+                            " title="Vidéo partagée">
+                        <img src="~/shared.png"
+                             alt="Partagée"
+                             style="width: 100%; height: 100%; border-radius: 50%;" />
+                    </div>
+                }
+            </a>
+
+            <div class="ellipsis" style="margin: 4px 4px 0 4px; font-size: 0.8em; font-weight: bold;">
+                @item.Media.Title
+            </div>
+            <div style="margin-left: 4px; color: gray; font-size: 0.65em;">
+                @item.Media.Category <br /> @Helper.When(item.Media.PublishDate)
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>Aucun résultat</h3>
+}

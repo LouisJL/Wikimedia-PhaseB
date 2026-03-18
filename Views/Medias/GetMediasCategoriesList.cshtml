@@ -1,0 +1,13 @@
+﻿@{ 
+    List<string> categories = DAL.DB.Medias.MediasCategories();
+    string selectedCategory = (string)Session["SelectedCategory"];
+}
+
+<select id="categorySelect" class="form-control">
+    <option value="" selected>Toutes les catégories</option>
+    @foreach (var category in categories)
+    {
+        string selected = selectedCategory == category ? "selected" : "";
+        <option value="@category" @selected>@category</option>
+    }
+</select>

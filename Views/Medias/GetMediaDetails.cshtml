@@ -1,0 +1,48 @@
+﻿@model Models.Media
+
+@if (Model != null)
+{
+    <dl>
+        <dd>
+            @if (Model.Shared)
+            {
+                <span style="color: gray">[Partagé]</span>
+                <br />
+            }
+            @Model.Title
+        </dd>
+        <dd>
+            @Helper.YoutubePlayer(Model.YoutubeId)
+        </dd>
+        <dd class="description">
+            @Model.Description
+        </dd>
+        <dt>
+            Catégorie
+        </dt>
+        <dd>
+            @Model.Category
+        </dd>
+
+        <dt>
+            Date de publication
+        </dt>
+        <dd>
+            @Helper.When(Model.PublishDate)
+        </dd>
+
+        <dt>
+            Ajouté par
+        </dt>
+        <dd>
+            @{
+                var owner = DAL.DB.Users.Get(Model.OwnerId);
+                var ownerName = owner != null ? owner.Name : "Utilisateur inconnu";
+                var ownerAvatar = owner != null ? owner.Avatar : "/images/default-avatar.png";
+            }
+            <img src="@ownerAvatar" alt="@ownerName"
+                 style="width:40px; height:40px; border-radius:50%; vertical-align:middle; margin-right:8px;" />
+            <span style="vertical-align:middle;">@ownerName</span>
+        </dd>
+    </dl>
+}

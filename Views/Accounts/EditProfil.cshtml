@@ -1,0 +1,79 @@
+﻿@model Models.User
+@{
+    ViewBag.PageTitle = "Profil";
+    Html.RenderPartial("ProfilForm");
+    string passwordTemp = (string)Session["CurrentEditingUserPassword"];
+}
+
+@section Scripts {
+    <script>
+        var unchangedPasswordCode;
+        var showPassword = false;
+
+        $(() => {
+            newSession(620);
+            initFormValidation();
+            addConflictValidation(
+                "/Accounts/EmailAvailable",
+                'Email' /* field unicity check */,
+                'submit' /* form submit button Id */);
+            unchangedPasswordCode = '@passwordTemp';
+            setUnchangedPassword();
+
+            $("#toggleShowPassword").hide();
+            $("#toggleShowPassword").click(() => { toggleShowPassword(); });
+
+            $("#Password").keyup(() => {
+                if ($("#Password").val() == "")
+                    $("#toggleShowPassword").hide();
+                else {
+                    if ($("#changePassword").is(':checked'))
+                        $("#toggleShowPassword").show();
+                }
+            })
+
+            $("#changePassword").change(function () {
+                if (!this.checked)
+                    setUnchangedPassword()
+                else
+                    resetPassword()
+            });
+        })
+
+        function setUnchangedPassword() {
+            $("#Password").val(unchangedPasswordCode);
+            $("#ConfirmPassword").val(unchangedPasswordCode);
+            $("#Password").prop("readonly", true);
+            $("#ConfirmPassword").prop("readonly", true);
+            $("#toggleShowPassword").hide();
+            $("#Password").attr("type", 'password');
+            $("#ConfirmPassword").attr("type", 'password');
+        }
+
+        function resetPassword() {
+            $("#Password").prop("readonly", false);
+            $("#ConfirmPassword").prop("readonly", false);
+            $("#Password").val('');
+            $("#ConfirmPassword").val('');
+            $("#toggleShowPassword").hide();
+            $("#toggleShowPassword").removeClass("fa-eye-slash");
+            $("#toggleShowPassword").addClass("fa-eye");
+            showPassword = false;
+        }
+
+        function toggleShowPassword() {
+            showPassword = !showPassword;
+            if (showPassword) {
+                $("#Password").attr("type", 'text');
+                $("#ConfirmPassword").attr("type", 'text');
+                $("#toggleShowPassword").addClass("fa-eye-slash");
+                $("#toggleShowPassword").removeClass("fa-eye");
+            } else {
+                $("#Password").attr("type", 'password');
+                $("#ConfirmPassword").attr("type", 'password');
+                $("#toggleShowPassword").removeClass("fa-eye-slash");
+                $("#toggleShowPassword").addClass("fa-eye");
+            }
+        }
+    </script>
+}

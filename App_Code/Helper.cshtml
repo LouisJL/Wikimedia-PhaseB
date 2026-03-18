@@ -1,0 +1,361 @@
+﻿@helper ImageLink(string controller, string action, string imageUrl, string imageClass, string title)
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <a href="@Url.Action(action, controller)">
+        <img src="@Url.Content(imageUrl)" class="@imageClass" title="@title" />
+    </a>
+}
+@helper Icon(string controlId, string icon_class, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    <span id="@controlId"
+          class="icon fa @icon_class"
+          title="@TooltipMessage"
+          data-placement="@ToolTipPlacement">
+    </span>
+}
+@helper IconCmd(string controller, string action, string icon_class, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <a href="@Url.Action(action,controller)" style="text-decoration:none">
+        <span class="icon fa @icon_class"
+              title="@TooltipMessage"
+              data-placement="@ToolTipPlacement">
+        </span>
+    </a>
+}
+@helper IconConfirmCmd(string controller, string Action, string icon_class, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    //// http://bootboxjs.com/documentation.html#bb-confirm
+    /// To do window.location is considered has a new connexion and cause authentification problems
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <div onclick='bootbox.confirm("@TooltipMessage", function(result){ if (result) window.location.href = "@Url.Action(Action,controller)"; })'>
+        <span class="icon fa @icon_class"
+              title="@TooltipMessage"
+              data-placement="@ToolTipPlacement">
+        </span>
+    </div>
+}
+@helper IconConfirmAjaxCmd(string controller, string Action, string icon_class, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    //// http://bootboxjs.com/documentation.html#bb-confirm
+    /// To do window.location is considered has a new connexion and cause authentification problems
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <div onclick='bootbox.confirm("@TooltipMessage", function(result) { if (result) ajaxActionCall("@Url.Action(Action,controller)") })'>
+        <span class="icon fa @icon_class"
+              title="@TooltipMessage"
+              data-placement="@ToolTipPlacement">
+        </span>
+    </div>
+}
+@helper IconConfirmCmdWithParam(string controller, string Action, object extraparam, string icon_class, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    //// http://bootboxjs.com/documentation.html#bb-confirm
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    <div onclick='bootbox.confirm("@TooltipMessage", function(result){ if (result) window.location = "@(Url.Action(Action, controller, extraparam))"; })'>
+        <span class="icon fa @icon_class"
+              title="@TooltipMessage"
+              data-placement="@ToolTipPlacement">
+        </span>
+    </div>
+}
+@helper ListToRadioButtonGroup(string name, System.Web.Mvc.SelectList options, int selectedValue)
+{
+    <div class="RadioButtonsGroup">
+        @foreach (System.Web.Mvc.SelectListItem option in options.Items)
+        {
+            string id = name + "_" + option.Value;
+            <div class="RadioButton">
+                @if (option.Value == selectedValue.ToString())
+                {
+                    <input type="radio" name="@name" class="@name" id="@id" value="@option.Value.ToString()" checked />
+                }
+                else
+                {
+                    <input type="radio" name="@name" class="@name" id="@id" value="@option.Value.ToString()" />
+                }
+                <label for="@id">@option.Text</label>
+            </div>
+        }
+    </div>
+    <br />
+}
+@helper SelectionLists(string controlId, System.Web.Mvc.SelectList selectedItems, System.Web.Mvc.SelectList items, int size = 10)
+{
+    <div class="select_@controlId selectionsGrid">
+        <select name='@controlId' size='@size.ToString()' multiple class='SelectedItems form-control'>
+            @if (selectedItems != null)
+            {
+                foreach (var si in selectedItems)
+                {
+                    <option value='@si.Value'>@si.Text</option>
+                }
+            }
+        </select>
+
+        <div class="HorSelectionsCMD">
+            <div class="AddSelection icon fa fa-circle-left" data-toggle="tooltip" data-placement="top" title="Ajouter"></div>
+            <div class="RemoveSelection icon fa fa-circle-right" data-toggle="tooltip" data-placement="bottom" title="Retirer"></div>
+            <div class="UnselectAll icon fa fa-times" data-toggle="tooltip" data-placement="bottom" title="Desélectionner"></div>
+        </div>
+
+        <div class="VerSelectionsCMD">
+            <div class="AddSelection icon fa fa-circle-up" data-toggle="tooltip" data-placement="top" title="Ajouter"></div>
+            <div class="RemoveSelection icon fa fa-circle-down" data-toggle="tooltip" data-placement="bottom" title="Retirer"></div>
+            <div class="UnselectAll icon fa fa-times" data-toggle="tooltip" data-placement="bottom" title="Desélectionner"></div>
+        </div>
+
+        <select size='@size.ToString()' multiple class='UnselectedItems form-control'>
+            @if (items != null)
+            {
+                foreach (var ui in items)
+                {
+                    if (selectedItems != null && selectedItems.Where(s => s.Value == ui.Value).FirstOrDefault() == null)
+                    {
+                        <option value='@ui.Value'>@ui.Text</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+}
+@helper ImageUploader(string targetControlId, string imageUrl, string TooltipMessage = "")
+{
+    <div class='imageUploader'
+         controlId='@targetControlId'
+         imageSrc='@imageUrl'
+         title="@TooltipMessage">
+    </div>
+}
+@helper Image(string url, string cssClass)
+{
+    <div class="@cssClass" style="background:url(@url);"></div>
+}
+@helper ButtonConfirmCmd(string actionUrl, string btn_class, string caption, string TooltipMessage, string ToolTipPlacement = "bottom")
+{
+    <button onclick="bootbox.confirm('@TooltipMessage', function(result){ if (result) window.location.href = '@actionUrl'; })"
+            class="@btn_class"
+            title="@TooltipMessage"
+            data-placement="@ToolTipPlacement">
+        @caption
+    </button>
+}
+@helper CountryFlag(string countryCode)
+{
+    var country = PhotosManager.WebServices.Countries.Get(countryCode);
+    if (country != null)
+    {
+        <img src="@country.Flag" title="@country.Name" style="width:40px;" />
+    }
+}
+@helper avatarLink(string avatar, string linkUrl)
+{
+    <a href="@linkUrl" data-toggle="tooltip" title="Modifier le profil....">
+        <div class="UserSmallAvatar"
+             style="background: url(@avatar)"></div>
+    </a>
+}
+@helper AvatarUser(Models.User user, string avatarClass = "UserMediumAvatar")
+{
+    var avatarUrl = user.Avatar;
+    <div class="userItem">
+        <div class="@avatarClass" style="background: url(@user.Avatar)"></div>
+        <div class="ellipsis">@user.Name</div>
+    </div>
+}
+@helper UsersCheckList(IEnumerable<Models.User> users, List<int> selectedUsers, string usersCheckListName = "UsersCheckList")
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+
+    <div class="usersCheckList">
+        @foreach (var user in users)
+        {
+            string chekBoxId = usersCheckListName + "_" + user.Id.ToString();
+            if (selectedUsers.Contains(user.Id))
+            {
+                <input type="checkbox" name="@usersCheckListName" id="@chekBoxId" value="@user.Id" checked />
+            }
+            else
+            {
+                <input type="checkbox" name="@usersCheckListName" id="@chekBoxId" value="@user.Id" />
+            }
+            <label for="@chekBoxId">
+                @Helper.AvatarUser(user, "UserSmallAvatar")
+            </label>
+        }
+    </div>
+}
+@helper OnLineStatusIcon(bool onLine, bool blocked = false)
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    var icon = (onLine ? "/Content/UI-Images/OnLine.png" : "/Content/UI-Images/OffLine.png");
+    if (blocked)
+    {
+        icon = (onLine ? "/Content/UI-Images/OnLine.png" : "/Content/UI-Images/Masked.png");
+    }
+    var iconUrl = Url.Content(icon);
+    <img src="@iconUrl" class="small_icon" />
+}
+@helper TimeOutIcon()
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    var iconUrl = Url.Content("~/Content/UI-Images/timeout.png");
+    <img src="@iconUrl" class="small_icon" title="Session expirée" />
+}
+@helper Checked(bool checkStatus)
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    if (checkStatus)
+    {
+        <img src="@Url.Content("~/Content/UI-Images/Accept.png")" class="small_icon" />
+    }
+    else
+    {
+        <div><img src="@Url.Content("~/Content/UI-Images/Abort.png")" class="small_icon" /></div>
+    }
+}
+@helper UserTypeIcon(int genderId)
+{
+    var Url = new System.Web.Mvc.UrlHelper(HttpContext.Current.Request.RequestContext);
+    var icon = "";
+    var tooltip = "";
+    switch (genderId)
+    {
+        case 1: icon = "~/Content/UI-Images/admin.png"; tooltip = "Administrateur"; break;
+        case 2: icon = "~/Content/UI-Images/power user.png"; tooltip = "Usager prévilégié"; break;
+        default: icon = "~/Content/UI-Images/user.png"; tooltip = "Usager standard"; break;
+    }
+    var iconUrl = Url.Content(icon);
+    <img src="@iconUrl" class="UserSmallAvatar" title="@tooltip" />
+}
+@helper ParseContent(string content)
+{
+    string[] tokens = content.Split(' ');
+    foreach (var token in tokens)
+    {
+        var t = token.ToLower();
+
+        if (t.Contains("http://") || t.Contains("https://"))
+        {
+            t = t.Replace("http://", "https://");
+            if (t.Contains(".webp"))
+            {
+                var image = token.Replace(".webp", "");
+                var webp = image + ".webp";
+                var png = image + ".png";
+                var jpg = image + ".jpg";
+                <br />
+                <picture class="contentImage">
+                    <source type="image/webp" srcset="@webp">
+                    <source type="image/png" srcset="@png">
+                    <img src="@jpg" style="width: auto;">
+                </picture>
+                <br />
+            }
+            else
+            {
+                if (t.Contains(".jpg") || t.Contains(".jpeg") || t.Contains(".png") || t.Contains(".bmp") || t.Contains(".svg"))
+                {
+                    <br />
+                    <a href="@token" target="_blank">
+                        <img class="contentImage" src="@token" alt="" />
+                    </a>
+                    <br />
+                }
+                else
+                {
+                    if (token.Contains("https://www.youtube.com/watch?v="))
+                    {
+                        string youtubeId = token.Replace("https://www.youtube.com/watch?v=", "");
+                        if (youtubeId.IndexOf("&") > -1)
+                        {
+                            youtubeId = youtubeId.Substring(0, youtubeId.IndexOf("&"));
+                        }
+                        string youtubeThumbnail = "https://i3.ytimg.com/vi/" + youtubeId + "/maxresdefault.jpg";
+                        <br />
+                        <a href="@token" target="_blank">
+                            <img class="contentImage" src="@youtubeThumbnail" alt="" />
+                        </a>
+                        <br />
+                    }
+                    else
+                    {
+                        string[] tt = token.Split('/');
+                        string sublink = token;
+                        if (tt.Length > 2)
+                        {
+                            sublink = tt[0] + @"//" + tt[2] + "...";
+                        }
+                        <a href="@token" target="_blank" class="ellipsis" title="@token">@sublink</a>
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (t.Contains("[hr]"))
+            {
+                <hr />
+            }
+            else
+            {
+                string subtoken = token;
+                if (token.Length > 28)
+                {
+                    subtoken = token.Substring(0, 28) + "...";
+                    <span class="token" title="@token">@subtoken</span>
+                }
+                else
+                {
+                    <span class="token">@subtoken</span>
+                }
+            }
+        }
+    }
+}
+@helper When(DateTime date, bool showtime = false)
+{
+    TimeSpan span = DateTime.Now.Subtract(date);
+    DateTime localTime = date; //date.Subtract(new TimeSpan((int)Session["TimeZoneOffset"], 0, 0));
+    string lds = localTime.ToLongDateString();
+    lds = char.ToUpper(lds[0]) + lds.Substring(1).ToLower();
+    if (span.Days > 0)
+    {
+        if (showtime)
+        {
+            <span>@lds - @localTime.ToShortTimeString()</span>
+        }
+        else
+        {
+
+            <div title="@localTime.ToShortTimeString()">@lds&nbsp;</div>
+
+        }
+    }
+    else
+    {
+        if (span.Hours >= 1)
+        {
+            <span>Il y a @span.Hours heures</span>
+        }
+        else
+        {
+            if (span.Minutes >= 1)
+            {
+                <span>Il y a @span.Minutes minutes</span>
+            }
+            else
+            {
+                <span>à l'instant</span>
+            }
+        }
+    }
+}
+@helper YoutubePlayer(string youtubeId, string yt_class = "mediaPalyerBig")
+{
+    <iframe class="mediaPlayerBig"
+            src="https://www.youtube.com/embed/@youtubeId"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+}

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Models.Login>
+
+@{
+    ViewBag.PageTitle = "Journal des connexions";
+}
+
+<div class="formLayout">
+    <div id="LoginsListContainer"><!-- Periodicaly refreshed --></div>
+</div>
+@section Scripts {
+
+    <script>
+        $(() => {
+            newSession(300);
+            let pr = new AutoRefreshedPanel("LoginsListContainer", "/Accounts/GetLoginsList", 5);
+        })
+    </script>
+}
+

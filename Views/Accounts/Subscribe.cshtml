@@ -1,0 +1,47 @@
+﻿@model Models.User
+@{
+    Html.RenderPartial("ProfilForm");
+    ViewBag.PageTitle = "Nouveau compte";
+}
+
+
+@section Scripts {
+    <script>
+        var showPassword = false;
+
+        $(() => {
+            new Session(120);
+            initFormValidation();
+            addConflictValidation(
+                "/Accounts/EmailAvailable",
+                'Email' /* field unicity check */,
+                'submit' /* form submit button Id */);
+            $("#toggleShowPassword").hide();
+            $("#toggleShowPassword").click(() => { toggleShowPassword(); });
+
+            $("#Password").keyup(() => {
+                if ($("#Password").val() == "")
+                    $("#toggleShowPassword").hide();
+                else {
+                    $("#toggleShowPassword").show();
+                }
+            })
+        })
+
+        function toggleShowPassword() {
+            showPassword = !showPassword;
+            if (showPassword) {
+                $("#Password").attr("type", 'text');
+                $("#ConfirmPassword").attr("type", 'text');
+                $("#toggleShowPassword").addClass("fa-eye-slash");
+                $("#toggleShowPassword").removeClass("fa-eye");
+            } else {
+                $("#Password").attr("type", 'password');
+                $("#ConfirmPassword").attr("type", 'password');
+                $("#toggleShowPassword").removeClass("fa-eye-slash");
+                $("#toggleShowPassword").addClass("fa-eye");
+            }
+        }
+        
+    </script>
+}

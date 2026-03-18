@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Models.User>
+
+@foreach (var item in Model)
+{
+    if (item.Id != Models.User.ConnectedUser.Id)
+    {
+        bool isOnline = item.Online;
+        string statusIcon = "/content/UI-Images/OffLine.png";
+        if (item.Blocked) { statusIcon = "/content/UI-Images/Masked.png"; }
+        else { if (item.Online) { statusIcon = "/content/UI-Images/OnLine.png"; } }
+        string verifiedIcon = item.Verified ? "/content/UI-Images/accept.png" : "/content/UI-Images/Abort.png";
+        string userTypeIcon = item.Access == Models.Access.Admin ? "/content/UI-Images/admin.png" : "/content/UI-Images/power_user.png";
+        string ViewAccessIcon = "/content/UI-Images/user.png";
+        string WriteAccessIcon = "/content/UI-Images/power_user.png";
+        string AdminAccessIcon = "/content/UI-Images/Admin.png";
+   
+        string selectViewAccess = "access";
+        string selectWriteAccess = "access";
+        string selectAdminAccess = "access";
+
+        switch (item.Access)
+        {
+            case Models.Access.View: selectViewAccess = "selectedAccess"; break;
+            case Models.Access.Write: selectWriteAccess = "selectedAccess"; break;
+            case Models.Access.Admin: selectAdminAccess = "selectedAccess"; break;
+        }
+        string promoteTitle = item.Access == Models.Access.Admin ? "Retirer les droits Administrateur de " : "Donner les droits Administrateur à ";
+        <div class="UserPanel" style="display: flex; align-items: center; margin: 8px; font-size: 14px; gap:12px">
+            <div style="display:grid; grid-template-columns:40px auto;align-items:center; gap:8px; cursor:default; width:200px">
+                @Helper.Image(item.Avatar, "UserSmallAvatar")
+                <span title="@item.Email">@item.Name</span>
+            </div>
+            <div class="blockCmd icon" style="text-align:center" userId="@item.Id" title="@(item.Blocked ? "Débloquer " : "Bloquer") le compte de l'usager @item.Name">
+                @Helper.Image(@statusIcon, "UserXSmallAvatar")
+            </div>
+
+            <div class="setUserAccessCmd icon @selectViewAccess" userId="@item.Id" title="Réduire les droits en lecture seule à l'usager @item.Name" access="@((int)Models.Access.View)">
+                @Helper.Image(ViewAccessIcon, "UserXSmallAvatar")
+            </div>
+            <div class="setUserAccessCmd icon @selectWriteAccess" userId="@item.Id" title="Donnez les droits en lecture/écriture à l'usager  @item.Name" access="@((int)Models.Access.Write)">
+                @Helper.Image(WriteAccessIcon, "UserXSmallAvatar")
+            </div>
+            <div class="setUserAccessCmd icon @selectAdminAccess" userId="@item.Id" title="Donnez les droits administrateur à l'usager  @item.Name" access="@((int)Models.Access.Admin)">
+                @Helper.Image(AdminAccessIcon, "UserXSmallAvatar")
+            </div>
+
+
+
+            <div class="@(item.Verified ? "" : "forceVerifyCmd") access" userId="@item.Id" title="@(item.Verified ? "Compte vérifié" : "Compte non vérifié, retirer ce status.")">
+                @Helper.Image(@verifiedIcon, "UserXSmallAvatar")
+            </div>
+
+            <div class="deleteCmd icon fa fa-trash access " title="Effacer l'usager @item.Name" userId="@item.Id"></div>
+
+        </div>
+    }
+}
+

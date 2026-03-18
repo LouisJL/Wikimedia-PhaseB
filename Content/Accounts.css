@@ -1,0 +1,110 @@
+﻿.event-form {
+    max-width:320px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    text-align:center;
+}
+.profil-form {
+    max-width: 320px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+}
+
+.event-form input {
+    margin-top:8px;
+    width:100%;
+}
+
+    .profil-form input {
+        margin-top: 8px;
+        width: 100%;
+    }
+
+.passwordLayout {
+    display:grid; 
+    grid-template-columns:auto 0px;
+}
+.passwordShowIcon {
+    transform: translate(-32px, 12px) !important;
+    cursor: pointer;
+    color:#aaa;
+    font-size:1.1em;
+}
+
+
+.userItem {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+
+
+.journalLayout {
+    display: flex;
+    column-gap: 8px;
+    padding-top:4px;
+    margin-bottom: 4px;
+    align-items: center;
+}
+
+.UserHeaderAvatar {
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+    margin-right: 3px;
+    margin-left: 3px;
+    border-radius: 25px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserXSmallAvatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserSmallAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 35px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.UserMediumAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.transparentBackground {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.access {
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+}
+.selectedAccess {
+    width: 40px;
+    height: 40px;
+    border: 0.1px solid dodgerblue;
+    padding: 3px;
+    border-radius:40px;
+    background-color:rgba(0,125,255,0.15);
+}

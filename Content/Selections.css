@@ -1,0 +1,65 @@
+﻿
+.selectionsGrid {
+    display: flex;
+    flex-flow: row;
+    font-family: Courrier,monospace;
+    font-size: smaller;
+    /*border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px;*/
+    padding-top : 8px;
+    gap:0px;
+    margin:0px;
+}
+
+.HorSelectionsCMD {
+    margin:0px;
+    display: flex;
+    flex-direction: column;
+    min-width: 40px;
+    align-items: center;
+    justify-content: center;
+    padding-right:8px;
+}
+
+.VerSelectionsCMD {
+    display: none;
+    flex-direction: row;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.AddSelectionx {
+    margin-left:0px;
+}
+.UnselectAll {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.selectionsGrid select {
+    flex: 1;
+    min-width: 120px;
+}
+
+@media screen and (max-width: 560px ) {
+    .selectionsGrid {
+        display: flex;
+        flex-flow: column;
+    }
+
+    .HorSelectionsCMD {
+        display: none;
+    }
+
+    .VerSelectionsCMD {
+        display: flex;
+    }
+}
+
+select option {
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

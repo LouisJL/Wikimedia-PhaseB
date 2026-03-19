@@ -220,6 +220,7 @@
     <Content Include="Views\Medias\List.cshtml" />
     <None Include="Properties\PublishProfiles\Wikimedia - Web Deploy.pubxml" />
     <Content Include="Views\Medias\GetMediaDetails.cshtml" />
+    <None Include="Properties\PublishProfiles\Wikimedia-201276695 - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

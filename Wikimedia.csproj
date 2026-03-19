@@ -221,6 +221,19 @@
     <None Include="Properties\PublishProfiles\Wikimedia - Web Deploy.pubxml" />
     <Content Include="Views\Medias\GetMediaDetails.cshtml" />
     <None Include="Properties\PublishProfiles\Wikimedia-201276695 - Web Deploy.pubxml" />
+    <Content Include="Views\Accounts\EditProfil.cshtml" />
+    <Content Include="Views\Accounts\EventsJournal.cshtml" />
+    <Content Include="Views\Accounts\GetEventsList.cshtml" />
+    <Content Include="Views\Accounts\GetLoginsList.cshtml" />
+    <Content Include="Views\Accounts\GetUsers.cshtml" />
+    <Content Include="Views\Accounts\Login.cshtml" />
+    <Content Include="Views\Accounts\LoginsJournal.cshtml" />
+    <Content Include="Views\Accounts\ManageUsers.cshtml" />
+    <Content Include="Views\Accounts\ProfilForm.cshtml" />
+    <Content Include="Views\Accounts\RenewPassword.cshtml" />
+    <Content Include="Views\Accounts\RenewPasswordCommand.cshtml" />
+    <Content Include="Views\Accounts\Subscribe.cshtml" />
+    <Content Include="Views\Medias\AccesRefuse.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

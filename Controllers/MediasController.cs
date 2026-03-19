@@ -73,8 +73,18 @@ public class MediasController : Controller
 
             int mediaId = (int)Session["CurrentMediaId"];
             Media Media = DB.Medias.Get(mediaId);
+
+            var currentUser = Models.User.ConnectedUser;
+            int currentUserId = currentUser?.Id ?? 0;
+            bool isAdmin = currentUser?.IsAdmin ?? false;
+
             if (Media != null)
             {
+                if (!(isAdmin || Media.Shared || Media.OwnerId == currentUserId))
+                {
+                    return PartialView("AccesRefuse");
+                }
+
                 if (DB.Users.HasChanged || DB.Medias.HasChanged || forceRefresh)
                 {
                     return PartialView(Media);
@@ -226,10 +236,8 @@ public class MediasController : Controller
         if (currentUser == null)
             return RedirectToAction("List");
 
-        // Assigne le propriétaire du média
         media.OwnerId = currentUser.Id;
 
-        // Optionnel : assigner PublishDate si nécessaire
         media.PublishDate = DateTime.Now;
 
         DB.Medias.Add(media);
